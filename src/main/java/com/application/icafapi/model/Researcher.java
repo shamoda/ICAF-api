@@ -5,20 +5,25 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @ToString
 @Document
-public class User {
+public class Researcher {
 
     @Id
     private ObjectId id;
     private String name;
-    private String contact;
     private String email;
-    private String role;
+    private String contact;
     private String password;
+    private String title;
+    private String author;
+    private String paperAbstract;
+    private String fileName;
+    private boolean approved;
+    private boolean paid;
 
 }
