@@ -21,16 +21,16 @@ import static com.application.icafapi.common.util.constant.AWS.*;
 public class FileService {
 
     public boolean uploadFile(MultipartFile mFile, String fileName, String type) {
-        String extension = FilenameUtils.getExtension(mFile.getOriginalFilename());
         File file = convertMultipartFileToFile(mFile);
         if (type.equals("paper")) {
-            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName + "." + extension).build(), RequestBody.fromFile(file));
+            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else if (type.equals("presentation")) {
-            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName + "." + extension).build(), RequestBody.fromFile(file));
+            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else if (type.equals("proposal")){
-            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName + "." + extension).build(), RequestBody.fromFile(file));
+            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else {
             file.delete();
+            log.info("Invalid file type");
             return false;
         }
         file.delete();
@@ -46,6 +46,7 @@ public class FileService {
         } else if (type.equals("proposal")) {
             getObjectRequest = GetObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
         } else {
+            log.info("Invalid file type");
             return null;
         }
         ResponseInputStream inputStream = getS3Client().getObject(getObjectRequest);
@@ -53,6 +54,7 @@ public class FileService {
             byte[] content = IoUtils.toByteArray(inputStream);
             return content;
         } catch (IOException e) {
+            log.error("Error while converting to ByteArray: ", e);
             e.printStackTrace();
         }
         return null;
@@ -67,6 +69,7 @@ public class FileService {
         } else if (type.equals("proposal")) {
             deleteObjectRequest = DeleteObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
         } else {
+            log.info("Invalid file type");
             return null;
         }
         DeleteObjectResponse deleteObjectResponse = getS3Client().deleteObject(deleteObjectRequest);
@@ -78,7 +81,7 @@ public class FileService {
         try (FileOutputStream fos = new FileOutputStream(convertedFile)){
             fos.write(mFile.getBytes());
         } catch (IOException e) {
-            log.error("Error converting MultipartFile to File", e);
+            log.error("Error converting MultipartFile to File: ", e);
         }
         return convertedFile;
     }
