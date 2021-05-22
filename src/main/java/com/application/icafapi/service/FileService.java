@@ -1,7 +1,6 @@
 package com.application.icafapi.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.ResponseInputStream;
@@ -12,6 +11,8 @@ import software.amazon.awssdk.utils.IoUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.application.icafapi.common.util.AWSUtil.getS3Client;
 import static com.application.icafapi.common.util.constant.AWS.*;
@@ -23,11 +24,11 @@ public class FileService {
     public boolean uploadFile(MultipartFile mFile, String fileName, String type) {
         File file = convertMultipartFileToFile(mFile);
         if (type.equals("paper")) {
-            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
+            getS3Client().putObject(PutObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else if (type.equals("presentation")) {
-            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
+            getS3Client().putObject(PutObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else if (type.equals("proposal")){
-            PutObjectResponse putObjectResponse = getS3Client().putObject(PutObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
+            getS3Client().putObject(PutObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else {
             file.delete();
             log.info("Invalid file type");
@@ -45,6 +46,8 @@ public class FileService {
             getObjectRequest = GetObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build();
         } else if (type.equals("proposal")) {
             getObjectRequest = GetObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
+        } else if (type.equals("template")) {
+            getObjectRequest = GetObjectRequest.builder().bucket(TEMPLATE_BUCKET).key(fileName).build();
         } else {
             log.info("Invalid file type");
             return null;
@@ -74,6 +77,28 @@ public class FileService {
         }
         DeleteObjectResponse deleteObjectResponse = getS3Client().deleteObject(deleteObjectRequest);
         return fileName + " deleted";
+    }
+
+    public List<String> getFileNames(String type) {
+        List<String> fileNames = new ArrayList<>();
+        List<S3Object> s3Objects = new ArrayList<>();
+        ListObjectsV2Request request = null;
+        if (type.equals("paper")) {
+            request = ListObjectsV2Request.builder().bucket(PAPER_BUCKET).build();
+        } else if (type.equals("presentation")) {
+            request = ListObjectsV2Request.builder().bucket(PRESENTATION_BUCKET).build();
+        } else if (type.equals("proposal")) {
+            request = ListObjectsV2Request.builder().bucket(PROPOSAL_BUCKET).build();
+        } else {
+            log.info("Invalid file type");
+            return null;
+        }
+        ListObjectsV2Response result = getS3Client().listObjectsV2(request);
+        s3Objects = result.contents();
+        for (S3Object object : s3Objects) {
+            fileNames.add(object.key());
+        }
+        return fileNames;
     }
 
     private File convertMultipartFileToFile(MultipartFile mFile) {

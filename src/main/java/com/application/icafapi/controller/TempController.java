@@ -3,6 +3,7 @@ package com.application.icafapi.controller;
 import com.application.icafapi.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,11 @@ public class TempController {
     @DeleteMapping("/delete/{file}")
     public void delete(@PathVariable String file) {
         service.deleteFile(file, "paper");
+    }
+
+    @GetMapping("/filenames/{type}")
+    public ResponseEntity<?> getFileNames(@PathVariable String type) {
+        return new ResponseEntity<>(service.getFileNames(type), HttpStatus.OK);
     }
 
 }
