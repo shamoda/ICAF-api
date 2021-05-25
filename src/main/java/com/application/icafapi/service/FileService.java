@@ -25,8 +25,6 @@ public class FileService {
         File file = convertMultipartFileToFile(mFile);
         if (type.equals("paper")) {
             getS3Client().putObject(PutObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
-        } else if (type.equals("presentation")) {
-            getS3Client().putObject(PutObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else if (type.equals("proposal")){
             getS3Client().putObject(PutObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build(), RequestBody.fromFile(file));
         } else {
@@ -42,8 +40,6 @@ public class FileService {
         GetObjectRequest getObjectRequest = null;
         if (type.equals("paper")) {
             getObjectRequest = GetObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName).build();
-        } else if (type.equals("presentation")) {
-            getObjectRequest = GetObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build();
         } else if (type.equals("proposal")) {
             getObjectRequest = GetObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
         } else if (type.equals("template")) {
@@ -67,8 +63,6 @@ public class FileService {
         DeleteObjectRequest deleteObjectRequest = null;
         if (type.equals("paper")) {
             deleteObjectRequest = DeleteObjectRequest.builder().bucket(PAPER_BUCKET).key(fileName).build();
-        } else if (type.equals("presentation")) {
-            deleteObjectRequest = DeleteObjectRequest.builder().bucket(PRESENTATION_BUCKET).key(fileName).build();
         } else if (type.equals("proposal")) {
             deleteObjectRequest = DeleteObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
         } else {
@@ -85,8 +79,6 @@ public class FileService {
         ListObjectsV2Request request = null;
         if (type.equals("paper")) {
             request = ListObjectsV2Request.builder().bucket(PAPER_BUCKET).build();
-        } else if (type.equals("presentation")) {
-            request = ListObjectsV2Request.builder().bucket(PRESENTATION_BUCKET).build();
         } else if (type.equals("proposal")) {
             request = ListObjectsV2Request.builder().bucket(PROPOSAL_BUCKET).build();
         } else {
