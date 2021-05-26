@@ -6,6 +6,7 @@ import com.application.icafapi.model.User;
 import com.application.icafapi.repository.ResearcherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,7 +42,8 @@ public class ResearcherService {
     }
 
     public List<Researcher> retrieveByExample(Researcher researcher) {
-        Example<Researcher> example = Example.of(researcher);
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withMatcher("title", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING));
+        Example<Researcher> example = Example.of(researcher, matcher);
         return repository.findAll(example);
     }
 

@@ -46,7 +46,7 @@ public class ResearcherController {
         return new ResponseEntity<>(service.retrieveAllResearchers(), HttpStatus.OK);
     }
 
-    @GetMapping("/researcher/filter")
+    @PostMapping("/researcher/filter")
     public ResponseEntity<?> getResearchersByExample(@RequestBody Researcher researcher) {
         return new ResponseEntity<>(service.retrieveByExample(researcher), HttpStatus.OK);
     }
