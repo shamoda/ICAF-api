@@ -41,4 +41,14 @@ public class ResearcherController {
         return new ResponseEntity<>(service.insertResearcher(researcher,user, paper), HttpStatus.CREATED);
     }
 
+    @GetMapping("/researcher")
+    public ResponseEntity<?> getAllResearchers() {
+        return new ResponseEntity<>(service.retrieveAllResearchers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/researcher/filter")
+    public ResponseEntity<?> getResearchersByExample(@RequestBody Researcher researcher) {
+        return new ResponseEntity<>(service.retrieveByExample(researcher), HttpStatus.OK);
+    }
+
 }

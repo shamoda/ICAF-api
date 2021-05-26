@@ -29,6 +29,11 @@ public class UserController {
         return new ResponseEntity<>(service.retrieveAllUsers(), HttpStatus.OK);
     }
 
+    @GetMapping("/user/filter")
+    public ResponseEntity<?> getUsersByExample(@RequestBody User user) {
+        return new ResponseEntity<>(service.retrieveByExample(user), HttpStatus.OK);
+    }
+
     @PostMapping("/user/login")
     public ResponseEntity<?> tmpLogin( @RequestParam("email") String email,
                                        @RequestParam("password") String password )
