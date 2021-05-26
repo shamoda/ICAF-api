@@ -7,7 +7,7 @@ import com.application.icafapi.repository.AttendeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.application.icafapi.common.util.constant.Email.*;
+import static com.application.icafapi.common.constant.Email.*;
 
 @Service
 public class AttendeeService {

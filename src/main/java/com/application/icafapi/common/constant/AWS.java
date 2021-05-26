@@ -1,4 +1,4 @@
-package com.application.icafapi.common.util.constant;
+package com.application.icafapi.common.constant;
 
 import software.amazon.awssdk.regions.Region;
 

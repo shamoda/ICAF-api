@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.application.icafapi.common.util.AWSUtil.getS3Client;
-import static com.application.icafapi.common.util.constant.AWS.*;
+import static com.application.icafapi.common.constant.AWS.*;
 
 @Log4j2
 @Service
