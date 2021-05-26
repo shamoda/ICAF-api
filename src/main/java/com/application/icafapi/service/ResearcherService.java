@@ -5,8 +5,11 @@ import com.application.icafapi.model.Researcher;
 import com.application.icafapi.model.User;
 import com.application.icafapi.repository.ResearcherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.application.icafapi.common.constant.Email.*;
 
@@ -31,6 +34,15 @@ public class ResearcherService {
         userService.insertUser(user);
         emailUtil.sendEmail(user.getEmail(), USER_REGISTRATION_SUBJECT, RESEARCHER_REGISTRATION_BODY);
         return repository.save(researcher);
+    }
+
+    public List<Researcher> retrieveAllResearchers() {
+        return repository.findAll();
+    }
+
+    public List<Researcher> retrieveByExample(Researcher researcher) {
+        Example<Researcher> example = Example.of(researcher);
+        return repository.findAll(example);
     }
 
 }

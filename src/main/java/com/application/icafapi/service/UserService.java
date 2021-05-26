@@ -3,6 +3,7 @@ package com.application.icafapi.service;
 import com.application.icafapi.model.User;
 import com.application.icafapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,11 @@ public class UserService {
         return repository.findAll();
     }
 
+    public List<User> retrieveByExample(User user) {
+        Example<User> example = Example.of(user);
+        return repository.findAll(example);
+    }
+
     public User login(String email, String password) {
         User user = repository.findByEmail(email);
         if(user == null) {
@@ -35,5 +41,8 @@ public class UserService {
         else
             return user;
     }
-
+     //test
+    public void deleteUser(User user){
+        repository.delete(user);
+    }
 }

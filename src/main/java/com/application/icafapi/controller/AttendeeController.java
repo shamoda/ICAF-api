@@ -35,4 +35,14 @@ public class AttendeeController {
         return new ResponseEntity<>(service.insertAttendee(attendee, user), HttpStatus.CREATED);
     }
 
+    @GetMapping("/attendee")
+    public ResponseEntity<?> getAllAttendees() {
+        return new ResponseEntity<>(service.retrieveAllAttendees(), HttpStatus.OK);
+    }
+
+    @GetMapping("/attendee/filter")
+    public ResponseEntity<?> getAttendeesByExample(@RequestBody Attendee attendee) {
+        return new ResponseEntity<>(service.retrieveByExample(attendee), HttpStatus.OK);
+    }
+
 }
