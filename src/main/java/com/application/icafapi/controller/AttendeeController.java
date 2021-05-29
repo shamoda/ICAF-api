@@ -40,7 +40,8 @@ public class AttendeeController {
         return new ResponseEntity<>(service.retrieveAllAttendees(), HttpStatus.OK);
     }
 
-    @GetMapping("/attendee/filter")
+
+    @PostMapping("/attendee/filter")
     public ResponseEntity<?> getAttendeesByExample(@RequestBody Attendee attendee) {
         return new ResponseEntity<>(service.retrieveByExample(attendee), HttpStatus.OK);
     }

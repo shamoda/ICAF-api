@@ -34,6 +34,14 @@ public class Email {
     public static final String COMMITTEE_REGISTRATION_END = newLine + newLine + "If you have any questions or concerns, feel free to contact us via," + newLine +
             "icaf2021@gmail.com" + newLine + newLine + "Best Regards," + newLine + "Organizing Committee";
 
+    public static final String SUBMISSION_STATUS_SUBJECT = "About Your Submission Status";
+
+    public static final String SUBMISSION_APPROVED_BODY = "Congratulations!" + newLine  + newLine +
+            "We are excited to inform you that your submission was Approved" + newLine + "Please login to your account stay up to date to know what you need to do next" + newLine;
+
+    public static final String SUBMISSION_REJECTED_BODY = "Hello," + newLine  + newLine +
+            "We are really sorry to inform you that your submission was Rejected" + newLine + "Please login to your account for more information." + newLine;
+
     private Email() {}
 
 }

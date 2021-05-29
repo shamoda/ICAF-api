@@ -35,7 +35,7 @@ public class ResearcherController {
     {
         String extension = FilenameUtils.getExtension(paper.getOriginalFilename());
         String fileName = title + "." + extension;
-        Researcher researcher = new Researcher(email, name, contact, title, author, paperAbstract, fileName, false, false);
+        Researcher researcher = new Researcher(email, name, contact, title, author, paperAbstract, fileName, "pending", "false", "");
         User user = new User(email, name, contact, "researcher", password);
 
         return new ResponseEntity<>(service.insertResearcher(researcher,user, paper), HttpStatus.CREATED);
@@ -46,9 +46,21 @@ public class ResearcherController {
         return new ResponseEntity<>(service.retrieveAllResearchers(), HttpStatus.OK);
     }
 
-    @GetMapping("/researcher/filter")
+    @GetMapping("/researcher/{email}")
+    public ResponseEntity<?> getAllResearcher(@PathVariable String email) {
+        return new ResponseEntity<>(service.retrievePaper(email), HttpStatus.OK);
+    }
+
+    @PostMapping("/researcher/filter")
     public ResponseEntity<?> getResearchersByExample(@RequestBody Researcher researcher) {
         return new ResponseEntity<>(service.retrieveByExample(researcher), HttpStatus.OK);
     }
-
+    @PostMapping("/researcher/review")
+    public ResponseEntity<?> reviewSubmission(@RequestParam("email") String email,
+                                              @RequestParam("status") String status,
+                                              @RequestParam("rComment") String rComment
+                                            )
+    {
+        return new ResponseEntity<>(service.reviewSubmission(email, status, rComment), HttpStatus.OK);
+    }
 }
