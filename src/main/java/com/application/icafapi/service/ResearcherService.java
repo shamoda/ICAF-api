@@ -47,6 +47,10 @@ public class ResearcherService {
     }
 
     public List<Researcher> retrieveByExample(Researcher researcher) {
+        Example<Researcher> example = Example.of(researcher);
+        return repository.findAll(example);
+    }
+
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withMatcher("title", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING));
         Example<Researcher> example = Example.of(researcher, matcher);
         return repository.findAll(example);
@@ -68,5 +72,4 @@ public class ResearcherService {
     public Researcher retrievePaper(String email) {
         return repository.findById(email).get();
     }
-
 }

@@ -28,7 +28,6 @@ public class UserController {
     public ResponseEntity<?> getAllUsers() {
         return new ResponseEntity<>(service.retrieveAllUsers(), HttpStatus.OK);
     }
-
     @PostMapping("/user/filter")
     public ResponseEntity<?> getUsersByExample(@RequestBody User user) {
         return new ResponseEntity<>(service.retrieveByExample(user), HttpStatus.OK);

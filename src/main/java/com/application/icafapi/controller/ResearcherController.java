@@ -55,7 +55,6 @@ public class ResearcherController {
     public ResponseEntity<?> getResearchersByExample(@RequestBody Researcher researcher) {
         return new ResponseEntity<>(service.retrieveByExample(researcher), HttpStatus.OK);
     }
-
     @PostMapping("/researcher/review")
     public ResponseEntity<?> reviewSubmission(@RequestParam("email") String email,
                                               @RequestParam("status") String status,
@@ -64,5 +63,4 @@ public class ResearcherController {
     {
         return new ResponseEntity<>(service.reviewSubmission(email, status, rComment), HttpStatus.OK);
     }
-
 }

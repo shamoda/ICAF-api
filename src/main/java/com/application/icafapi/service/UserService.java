@@ -41,5 +41,8 @@ public class UserService {
         else
             return user;
     }
-
+     //test
+    public void deleteUser(User user){
+        repository.delete(user);
+    }
 }
