@@ -43,7 +43,7 @@ public class FileService {
         } else if (type.equals("proposal")) {
             getObjectRequest = GetObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
         } else if (type.equals("template")) { //CHANGE
-            getObjectRequest = GetObjectRequest.builder().bucket(PROPOSAL_BUCKET).key(fileName).build();
+            getObjectRequest = GetObjectRequest.builder().bucket(TEMPLATE_BUCKET).key(fileName).build();
         } else {
             log.info("Invalid file type");
             return null;
