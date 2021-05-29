@@ -20,7 +20,8 @@ public class Researcher {
     private String author;
     private String paperAbstract;
     private String fileName;
-    private boolean approved;
-    private boolean paid;
+    private String status;
+    private String paid;
+    private String rComment;
 
 }
