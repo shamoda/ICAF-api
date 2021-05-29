@@ -33,7 +33,6 @@ class IcafApiApplicationTests {
 		 assertEquals(2, userService.retrieveAllUsers().size());
 	}
 
-
 	//[POST -TEST CASE 02] Creating a user
 	@Test
 	public void saveUser(){
@@ -45,9 +44,7 @@ class IcafApiApplicationTests {
 		assertEquals(user, userService.insertUser(user));
 	}
 
-
 	//[DELETE -TEST CASE 03] Deleting a user
-
 	@Test
 	public void deleteUser(){
 		//User object definition
