@@ -40,4 +40,12 @@ public class UserController {
         return new ResponseEntity<>(service.login(email, password), HttpStatus.OK);
     }
 
+    @PostMapping("/user/changepassword")
+    public ResponseEntity<?> changePassword(@RequestParam("email") String email,
+                                            @RequestParam("password") String password
+                                            )
+    {
+        return new ResponseEntity<>(service.changePassword(email, password), HttpStatus.OK);
+    }
+
 }

@@ -68,4 +68,11 @@ public class ResearcherService {
     public Researcher retrievePaper(String email) {
         return repository.findById(email).get();
     }
+
+    public String updatePayment(String email) {
+        Researcher researcher = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(email)), Researcher.class);
+        researcher.setPaid("true");
+        mongoTemplate.save(researcher);
+        return "Payment Updated";
+    }
 }

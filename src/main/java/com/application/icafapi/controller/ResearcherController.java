@@ -63,4 +63,9 @@ public class ResearcherController {
     {
         return new ResponseEntity<>(service.reviewSubmission(email, status, rComment), HttpStatus.OK);
     }
+
+    @PostMapping("/researcher/pay/{email}")
+    public ResponseEntity<?> updatePayment(@PathVariable String email) {
+        return new ResponseEntity<>(service.updatePayment(email), HttpStatus.OK);
+    }
 }
