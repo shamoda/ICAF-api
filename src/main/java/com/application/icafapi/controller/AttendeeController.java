@@ -46,4 +46,9 @@ public class AttendeeController {
         return new ResponseEntity<>(service.retrieveByExample(attendee), HttpStatus.OK);
     }
 
+    @DeleteMapping("/attendee/{email}")
+    public ResponseEntity<?> deleteAttendee(@PathVariable String email) {
+        return new ResponseEntity<>(service.deleteAttendee(email), HttpStatus.OK);
+    }
+
 }

@@ -75,4 +75,14 @@ public class ResearcherService {
         mongoTemplate.save(researcher);
         return "Payment Updated";
     }
+
+    public String deleteResearcher(String email) {
+        userService.deleteUserByEmail(email);
+        Researcher researcher = repository.findById(email).get();
+        String fileName = researcher.getFileName();
+        fileService.deleteFile(fileName, "paper");
+        repository.deleteById(email);
+        emailUtil.sendEmail(email, ACCOUNT_REMOVAL_SUBJECT, ACCOUNT_REMOVAL_BODY+COMMITTEE_REGISTRATION_END);
+        return "Researcher deleted";
+    }
 }

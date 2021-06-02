@@ -68,4 +68,9 @@ public class ResearcherController {
     public ResponseEntity<?> updatePayment(@PathVariable String email) {
         return new ResponseEntity<>(service.updatePayment(email), HttpStatus.OK);
     }
+
+    @DeleteMapping("/researcher/{email}")
+    public ResponseEntity<?> deleteResearcher(@PathVariable String email) {
+        return new ResponseEntity<>(service.deleteResearcher(email), HttpStatus.OK);
+    }
 }

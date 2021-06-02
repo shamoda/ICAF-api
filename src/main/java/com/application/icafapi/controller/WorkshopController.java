@@ -43,4 +43,9 @@ public class WorkshopController {
         return  new ResponseEntity<>(workshopService.getBySearch(workshopConductor),HttpStatus.FOUND);
     }
 
+    @DeleteMapping("/workshop/{email}")
+    public ResponseEntity<?> deleteWorkshop(@PathVariable String email) {
+        return new ResponseEntity<>(workshopService.deleteWorkshop(email), HttpStatus.OK);
+    }
+
 }
