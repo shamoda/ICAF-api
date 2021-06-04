@@ -1,6 +1,7 @@
 package com.application.icafapi.controller;
 
 import com.application.icafapi.model.User;
+import com.application.icafapi.model.Workshop;
 import com.application.icafapi.model.WorkshopConductor;
 import com.application.icafapi.service.WorkshopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalTime;
+import java.util.Date;
+
+import static com.application.icafapi.common.constant.workshopConstant.*;
+
 @RestController
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
 public class WorkshopController {
 
@@ -19,28 +26,41 @@ public class WorkshopController {
         this.workshopService = workshopService;
     }
     @PostMapping("/registerWorkshop")
-    public ResponseEntity<?> createResearch(@RequestParam("email") String email,
-                                            @RequestParam("name") String name,
-                                            @RequestParam("phone") String phone,
-                                            @RequestParam("title") String title,
-                                            @RequestParam("qualifications") String qualifications,
-                                            @RequestParam("organization") String organization,
-                                            @RequestParam("post") String post,
-                                            @RequestParam("fileData") MultipartFile multipartFile,
-                                            @RequestParam("accept") boolean accept,
-                                            @RequestParam("password") String password)
+    public ResponseEntity<?> createWorkshop(@RequestParam("title") String title,
+                                            @RequestParam("subject") String subject,
+                                            @RequestParam("conductor") String condutor,
+                                            @RequestParam("description") String description,
+                                            @RequestParam(value="file", required = false)MultipartFile proposal
+                                         )
     {
-        WorkshopConductor workshopConductor = new WorkshopConductor(email,name,phone,title,qualifications,organization,post,accept);
-        User user = new User(email,name,phone,"workshopConductor", password);
-        return new ResponseEntity<>(workshopService.createWorkshop(workshopConductor,multipartFile,user), HttpStatus.CREATED);
+        Workshop workshop = new Workshop(ID,title,subject,condutor,description,FILE_NAME,IMAGE_NAME,VENUE,DATE,TIME,ACCEPT,R_COMMENT,A_COMMENT);
+        return new ResponseEntity<>(workshopService.createWorkshop(workshop,proposal), HttpStatus.CREATED);
     }
-    @GetMapping("/getWorkshops")
+    @GetMapping("/getConductors")
     public ResponseEntity<?> retrieveWorkshops(){
         return  new ResponseEntity<>(workshopService.getAllWorkshops(),HttpStatus.ACCEPTED);
     }
     @GetMapping("/getWorkshops/search")
-    public ResponseEntity<?>filterWorkshops(@RequestBody WorkshopConductor workshopConductor){
-        return  new ResponseEntity<>(workshopService.getBySearch(workshopConductor),HttpStatus.FOUND);
+    public ResponseEntity<?>filterWorkshops(@RequestBody Workshop workshop){
+        return  new ResponseEntity<>(workshopService.getBySearch(workshop),HttpStatus.ACCEPTED);
+    }
+    @PostMapping("/reviewProposal")
+    public ResponseEntity<?> reviewProposal(@RequestParam("status") String status,
+                                            @RequestParam("rComment") String rComment,
+                                            @RequestParam("conductor")String conductor,
+                                            @RequestParam("id")String workshopId,
+                                            @RequestParam("image")MultipartFile image
+                                            )
+    {
+        return new ResponseEntity<>(workshopService.reviewProposal(workshopId,status,rComment,conductor,image),HttpStatus.CREATED);
+    }
+    @GetMapping("/getWorkshopsByConductor/{conductor}")
+    public ResponseEntity<?> getWorkshopsForConductor(@PathVariable String conductor){
+        return new ResponseEntity<>(workshopService.getWorkshopsByConductor(conductor),HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/getWorkshopById/{workshopId}")
+    public ResponseEntity<?> getWorkshopById(@PathVariable String workshopId){
+        return new ResponseEntity<>(workshopService.getWorkshopById(workshopId),HttpStatus.OK);
     }
 
     @DeleteMapping("/workshop/{email}")
