@@ -4,9 +4,6 @@ import com.application.icafapi.common.util.EmailUtil;
 import com.application.icafapi.model.Workshop;
 import com.application.icafapi.repository.WorkshopRepository;
 import lombok.extern.slf4j.Slf4j;
-import com.application.icafapi.model.User;
-import com.application.icafapi.model.WorkshopConductor;
-import com.application.icafapi.repository.WorkshopRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -37,12 +34,14 @@ public class WorkshopService {
     private final FileService fileService;
     private final EmailUtil emailUtil;
     private final MongoTemplate mongoTemplate;
+    private final UserService userService;
 
     @Autowired  //Dependency injection
-    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService, EmailUtil emailUtil) {
+    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService, EmailUtil emailUtil, MongoTemplate mongoTemplate) {
         this.workshopRepository = workshopRepository;
         this.fileService = fileService;
         this.emailUtil = emailUtil;
+        this.userService = userService;
         this.mongoTemplate = mongoTemplate;
     }
    
