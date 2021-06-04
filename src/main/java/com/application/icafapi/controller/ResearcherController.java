@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ResearcherController {
 
     private final ResearcherService service;
-
     @Autowired
     public ResearcherController(ResearcherService service) {
         this.service = service;
