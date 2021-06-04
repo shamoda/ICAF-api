@@ -68,4 +68,21 @@ public class ResearcherService {
     public Researcher retrievePaper(String email) {
         return repository.findById(email).get();
     }
+
+    public String updatePayment(String email) {
+        Researcher researcher = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(email)), Researcher.class);
+        researcher.setPaid("true");
+        mongoTemplate.save(researcher);
+        return "Payment Updated";
+    }
+
+    public String deleteResearcher(String email) {
+        userService.deleteUserByEmail(email);
+        Researcher researcher = repository.findById(email).get();
+        String fileName = researcher.getFileName();
+        fileService.deleteFile(fileName, "paper");
+        repository.deleteById(email);
+        emailUtil.sendEmail(email, ACCOUNT_REMOVAL_SUBJECT, ACCOUNT_REMOVAL_BODY+COMMITTEE_REGISTRATION_END);
+        return "Researcher deleted";
+    }
 }

@@ -40,4 +40,11 @@ public class AttendeeService {
         Example<Attendee> example = Example.of(attendee);
         return repository.findAll(example);
     }
+
+    public String deleteAttendee(String email) {
+        userService.deleteUserByEmail(email);
+        repository.deleteById(email);
+        emailUtil.sendEmail(email, ACCOUNT_REMOVAL_SUBJECT, ACCOUNT_REMOVAL_BODY+COMMITTEE_REGISTRATION_END);
+        return "Attendee deleted";
+    }
 }

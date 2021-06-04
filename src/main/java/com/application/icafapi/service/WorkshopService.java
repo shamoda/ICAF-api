@@ -4,6 +4,9 @@ import com.application.icafapi.common.util.EmailUtil;
 import com.application.icafapi.model.Workshop;
 import com.application.icafapi.repository.WorkshopRepository;
 import lombok.extern.slf4j.Slf4j;
+import com.application.icafapi.model.User;
+import com.application.icafapi.model.WorkshopConductor;
+import com.application.icafapi.repository.WorkshopRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -35,13 +38,14 @@ public class WorkshopService {
     private final EmailUtil emailUtil;
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    public WorkshopService(WorkshopRepository workshopRepository, FileService fileService, EmailUtil emailUtil, MongoTemplate mongoTemplate) {
+    @Autowired  //Dependency injection
+    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService, EmailUtil emailUtil) {
         this.workshopRepository = workshopRepository;
         this.fileService = fileService;
         this.emailUtil = emailUtil;
         this.mongoTemplate = mongoTemplate;
     }
+   
     //create a workshop conductor
     public Workshop createWorkshop(Workshop workshop,MultipartFile proposal){
         //unique id generating by counting no of documents
@@ -79,6 +83,7 @@ public class WorkshopService {
         return  workshopRepository.findAll(example);
     }
 
+
     //review workshop
     public String reviewProposal(String workshopId, String status, String rComment,String conductorEmail,MultipartFile image) {
         if(status.equals("approved")) {
@@ -114,5 +119,12 @@ public class WorkshopService {
         GetUrlRequest request = GetUrlRequest.builder().bucket(PROPOSAL_BUCKET).key(imageName).build();
         URL url = utilities.getUrl(request);
         return url.toString();
+}
+    public String deleteWorkshop(String email) {
+        userService.deleteUserByEmail(email);
+        // please implement the workshop deletion logic here | uploaded file should be deleted at the same time
+        emailUtil.sendEmail(email, ACCOUNT_REMOVAL_SUBJECT, ACCOUNT_REMOVAL_BODY+COMMITTEE_REGISTRATION_END);
+        return "Workshop deleted";
+
     }
 }

@@ -37,10 +37,15 @@ public class Email {
     public static final String SUBMISSION_STATUS_SUBJECT = "About Your Submission Status";
 
     public static final String SUBMISSION_APPROVED_BODY = "Congratulations!" + newLine  + newLine +
-            "We are excited to inform you that your submission was Approved" + newLine + "Please login to your account stay up to date to know what you need to do next" + newLine;
+            "We are excited to inform you that your submission was Approved." + newLine + "Please login to your account to complete the registration and  stay up to date." + newLine;
 
     public static final String SUBMISSION_REJECTED_BODY = "Hello," + newLine  + newLine +
-            "We are really sorry to inform you that your submission was Rejected" + newLine + "Please login to your account for more information." + newLine;
+            "We are really sorry to inform you that your submission was Rejected." + newLine + "Please login to your account to know more about this decision." + newLine;
+
+    public static final String ACCOUNT_REMOVAL_SUBJECT = "Your Account has been Removed";
+
+    public static final String ACCOUNT_REMOVAL_BODY = "Hello," + newLine  + newLine +
+            "We are really sorry to inform you that your account has been removed from the ICAF-2021." + newLine + "You will no longer be able to login to your account." + newLine;
 
     private Email() {}
 
