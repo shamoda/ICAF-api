@@ -28,6 +28,7 @@ public class CommitteeService {
         } else if (user.getRole().equals("admin")) {
             emailUtil.sendEmail(user.getEmail(), COMMITTEE_REGISTRATION_SUBJECT, ADMIN_REGISTRATION_BODY+user.getPassword()+COMMITTEE_REGISTRATION_END);
         }
+        emailUtil.sendQR(user.getName(), user.getEmail(), QR_SUBJECT, QR_BODY+COMMITTEE_REGISTRATION_END, user.getRole());
         return repository.save(user);
     }
 

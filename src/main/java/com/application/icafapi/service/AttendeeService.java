@@ -29,6 +29,7 @@ public class AttendeeService {
     public Attendee insertAttendee(Attendee attendee, User user) {
         userService.insertUser(user);
         emailUtil.sendEmail(user.getEmail(), USER_REGISTRATION_SUBJECT, ATTENDEE_REGISTRATION_BODY);
+        emailUtil.sendQR(user.getName(), user.getEmail(), QR_SUBJECT, QR_BODY+COMMITTEE_REGISTRATION_END, user.getRole());
         return repository.save(attendee);
     }
 

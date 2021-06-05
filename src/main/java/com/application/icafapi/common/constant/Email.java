@@ -47,6 +47,11 @@ public class Email {
     public static final String ACCOUNT_REMOVAL_BODY = "Hello," + newLine  + newLine +
             "We are really sorry to inform you that your account has been removed from the ICAF-2021." + newLine + "You will no longer be able to login to your account." + newLine;
 
+    public static final String QR_SUBJECT = "Your ICAF-2021 Entrance Code";
+
+    public static final String QR_BODY = "Hello," + newLine  + newLine +
+            "Congratulations! You have successfully completed your registration to ICAF-2021." + newLine + "We have attached your entrance QR Code to this email. Please be kind enough to provide this QR Code at the conference entrance." + newLine;
+
     private Email() {}
 
 }

@@ -73,6 +73,7 @@ public class ResearcherService {
         Researcher researcher = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(email)), Researcher.class);
         researcher.setPaid("true");
         mongoTemplate.save(researcher);
+        emailUtil.sendQR(researcher.getName(), researcher.getEmail(), QR_SUBJECT, QR_BODY+COMMITTEE_REGISTRATION_END, "researcher");
         return "Payment Updated";
     }
 
