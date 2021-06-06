@@ -38,16 +38,13 @@ public class WorkshopService {
     private final UserService userService;
     private final ConductorRepository conductorRepository;
 
-   
-
     @Autowired  //Dependency injection
-    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService, EmailUtil emailUtil, MongoTemplate mongoTemplate) {
+    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService,ConductorRepository conductorRepository,EmailUtil emailUtil, MongoTemplate mongoTemplate) {
         this.workshopRepository = workshopRepository;
         this.fileService = fileService;
         this.emailUtil = emailUtil;
         this.userService = userService;
         this.mongoTemplate = mongoTemplate;
-        this.userService = userService;
         this.conductorRepository = conductorRepository;
     }
    
@@ -100,11 +97,6 @@ public class WorkshopService {
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
         workshop.setStatus(status);
         workshop.setRComment(rComment);
-//        //Generate image name
-//        String ext = FilenameUtils.getExtension(image.getOriginalFilename());
-//        IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
-//        //upload file
-//        fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
         mongoTemplate.save(workshop);
         return "reviewed";
     }
