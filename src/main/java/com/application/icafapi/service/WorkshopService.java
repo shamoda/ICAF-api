@@ -2,11 +2,9 @@ package com.application.icafapi.service;
 
 import com.application.icafapi.common.util.EmailUtil;
 import com.application.icafapi.model.Workshop;
+import com.application.icafapi.repository.ConductorRepository;
 import com.application.icafapi.repository.WorkshopRepository;
 import lombok.extern.slf4j.Slf4j;
-import com.application.icafapi.model.User;
-import com.application.icafapi.model.WorkshopConductor;
-import com.application.icafapi.repository.WorkshopRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -37,13 +35,17 @@ public class WorkshopService {
     private final FileService fileService;
     private final EmailUtil emailUtil;
     private final MongoTemplate mongoTemplate;
+    private final UserService userService;
+    private final ConductorRepository conductorRepository;
 
     @Autowired  //Dependency injection
-    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService, EmailUtil emailUtil) {
+    public WorkshopService(WorkshopRepository workshopRepository, MongoTemplate mongoTemplate, FileService fileService, EmailUtil emailUtil, UserService userService, ConductorRepository conductorRepository) {
         this.workshopRepository = workshopRepository;
         this.fileService = fileService;
         this.emailUtil = emailUtil;
         this.mongoTemplate = mongoTemplate;
+        this.userService = userService;
+        this.conductorRepository = conductorRepository;
     }
    
     //create a workshop conductor
@@ -85,7 +87,7 @@ public class WorkshopService {
 
 
     //review workshop
-    public String reviewProposal(String workshopId, String status, String rComment,String conductorEmail,MultipartFile image) {
+    public String reviewProposal(String workshopId, String status, String rComment,String conductorEmail) {
         if(status.equals("approved")) {
             emailUtil.sendEmail(conductorEmail, SUBMISSION_STATUS_SUBJECT, SUBMISSION_APPROVED_BODY+COMMITTEE_REGISTRATION_END);
         } else if (status.equals("rejected")) {
@@ -95,11 +97,11 @@ public class WorkshopService {
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
         workshop.setStatus(status);
         workshop.setRComment(rComment);
-        //Generate image name
-        String ext = FilenameUtils.getExtension(image.getOriginalFilename());
-        IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
-        //upload file
-        fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
+//        //Generate image name
+//        String ext = FilenameUtils.getExtension(image.getOriginalFilename());
+//        IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
+//        //upload file
+//        fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
         mongoTemplate.save(workshop);
         return "reviewed";
     }
@@ -121,10 +123,33 @@ public class WorkshopService {
         return url.toString();
 }
     public String deleteWorkshop(String email) {
+        //find the workshop of the Id ,delete workshop
+        Workshop workshop = workshopRepository.findById(email).get();
+        String workshopId = workshop.getWorkshopId();
+        workshopRepository.deleteById(workshopId);
+        //delete workshop conductor
+        conductorRepository.deleteById(email);
+        //delete the user
         userService.deleteUserByEmail(email);
         // please implement the workshop deletion logic here | uploaded file should be deleted at the same time
         emailUtil.sendEmail(email, ACCOUNT_REMOVAL_SUBJECT, ACCOUNT_REMOVAL_BODY+COMMITTEE_REGISTRATION_END);
         return "Workshop deleted";
 
+    }
+
+    public String editWorkshop(String workshopId, String date, String time, MultipartFile image,String venue) {
+        //querying and finding the object matching with workshopId
+        Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
+        workshop.setDate(date);
+        workshop.setTime(time);
+        workshop.setVenue(venue);
+        //Generate image name and setting
+        String ext = FilenameUtils.getExtension(image.getOriginalFilename());
+        IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
+        workshop.setImageName(IMAGE_NAME);
+        //upload file
+        fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
+        mongoTemplate.save(workshop);
+        return "edited";
     }
 }
