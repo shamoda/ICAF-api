@@ -38,11 +38,14 @@ public class WorkshopService {
     private final UserService userService;
     private final ConductorRepository conductorRepository;
 
+   
+
     @Autowired  //Dependency injection
-    public WorkshopService(WorkshopRepository workshopRepository, MongoTemplate mongoTemplate, FileService fileService, EmailUtil emailUtil, UserService userService, ConductorRepository conductorRepository) {
+    public WorkshopService(WorkshopRepository workshopRepository, UserService userService, FileService fileService, EmailUtil emailUtil, MongoTemplate mongoTemplate) {
         this.workshopRepository = workshopRepository;
         this.fileService = fileService;
         this.emailUtil = emailUtil;
+        this.userService = userService;
         this.mongoTemplate = mongoTemplate;
         this.userService = userService;
         this.conductorRepository = conductorRepository;

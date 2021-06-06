@@ -4,9 +4,12 @@ import com.application.icafapi.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.application.icafapi.common.util.QRUtil.generateQR;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -37,6 +40,12 @@ public class TempController {
     @GetMapping("/filenames/{type}")
     public ResponseEntity<?> getFileNames(@PathVariable String type) {
         return new ResponseEntity<>(service.getFileNames(type), HttpStatus.OK);
+    }
+
+    @GetMapping(  value = "/qr",
+            produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<?> getQR() {
+        return new ResponseEntity<>(generateQR("Shamoda", "shamoda@gmail.com", "admin"), HttpStatus.OK);
     }
 
 }
