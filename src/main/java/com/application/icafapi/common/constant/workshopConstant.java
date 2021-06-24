@@ -19,5 +19,6 @@ public class workshopConstant {
     public static String ID= "";
     public static String R_COMMENT="";
     public static String A_COMMENT="";
+    public static String PUBLISH="unpublished";
     public static LocalDateTime CurrentDATETIME= LocalDateTime.now();
 }

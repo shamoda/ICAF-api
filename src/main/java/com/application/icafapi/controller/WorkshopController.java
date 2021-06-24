@@ -35,7 +35,7 @@ public class WorkshopController {
                                             @RequestParam("description") String description,
                                             @RequestParam("file") MultipartFile proposal
     ) {
-        Workshop workshop = new Workshop(ID, title, subject, conductor, description, FILE_NAME, IMAGE_NAME, VENUE, DATE, TIME, ACCEPT, R_COMMENT, A_COMMENT, CurrentDATETIME);
+        Workshop workshop = new Workshop(ID, title, subject, conductor, description, FILE_NAME, IMAGE_NAME, VENUE, DATE, TIME, ACCEPT, R_COMMENT, A_COMMENT, CurrentDATETIME,PUBLISH);
         return new ResponseEntity<>(workshopService.createWorkshop(workshop, proposal), HttpStatus.CREATED);
     }
 
@@ -78,11 +78,17 @@ public class WorkshopController {
     public ResponseEntity<?> editProposal(@RequestParam("id") String workshopId,
                                           @RequestParam("date") String date,
                                           @RequestParam("time") String time,
-                                          @RequestParam("image") MultipartFile image,
-                                          @RequestParam("venue") String venue
+                                          @RequestParam(value = "image" ,required = false) MultipartFile image,
+                                          @RequestParam("venue") String venue,
+                                          @RequestParam("title") String title,
+                                          @RequestParam("subject") String subject,
+                                          @RequestParam("conductor") String conductor,
+                                          @RequestParam("description") String description,
+                                          @RequestParam("publish") String publish,
+                                          @RequestParam(value = "aComment",required = false) String aComment
                                          )
     {
-        return new ResponseEntity<>(workshopService.editWorkshop(workshopId, date, time, image,venue), HttpStatus.OK);
+        return new ResponseEntity<>(workshopService.editWorkshop(workshopId, date, time, image,venue,title,subject,conductor,description,publish,aComment), HttpStatus.OK);
     }
 
     @GetMapping("/getUrl/{filename}")

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface WorkshopRepository  extends MongoRepository<Workshop, String> {
-    public List<Workshop> findByConductor(String conductor); //returns a list of all the workshops by a one conductor
+    public Workshop findByConductor(String conductor); //returns a list of all the workshops by a one conductor
 }

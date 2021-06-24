@@ -37,4 +37,8 @@ public class ConductorService {
         Example<WorkshopConductor> example = Example.of(workshopConductor);
         return conductorRepository.findAll(example);
     }
+
+    public WorkshopConductor getConductor(String conductor) {
+        return conductorRepository.findById(conductor).get();
+    }
 }
