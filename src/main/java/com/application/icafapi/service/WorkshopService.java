@@ -4,6 +4,7 @@ import com.application.icafapi.common.util.EmailUtil;
 import com.application.icafapi.model.Workshop;
 import com.application.icafapi.repository.ConductorRepository;
 import com.application.icafapi.repository.WorkshopRepository;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class WorkshopService {
     }
 
     //review workshop
-    public String reviewProposal(String workshopId, String status, String rComment,String conductorEmail) {
+    public String reviewProposal( String workshopId, String status, String rComment, String conductorEmail,String adminComment) {
         if(status.equals("approved")) {
             emailUtil.sendEmail(conductorEmail, SUBMISSION_STATUS_SUBJECT, SUBMISSION_APPROVED_BODY+COMMITTEE_REGISTRATION_END);
         } else if (status.equals("rejected")) {
@@ -95,7 +96,14 @@ public class WorkshopService {
         //querying and finding the object matching with workshopId
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
         workshop.setStatus(status);
-        workshop.setRComment(rComment);
+        //check reviewer comment null
+        if(!rComment.equals(null)){
+            workshop.setRComment(rComment);
+        }
+        //check admin comment null
+        if(!adminComment.equals(null)){
+            workshop.setAComment(adminComment);
+        }
         mongoTemplate.save(workshop);
         return "reviewed";
     }
@@ -141,6 +149,7 @@ public class WorkshopService {
         workshop.setDescription(description);
         workshop.setPublish(publish);
         workshop.setAComment(aComment);
+        workshop.setEdit(true);
         //Generate image name and setting
         String ext = FilenameUtils.getExtension(image.getOriginalFilename());
         IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
@@ -149,5 +158,13 @@ public class WorkshopService {
         fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
         mongoTemplate.save(workshop);
         return "edited";
+    }
+    public String publishPost(String workshopId,String status,String postComment){
+        Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
+        log.info(workshop.getWorkshopId());
+        workshop.setPublish(status);
+        workshop.setPostComment(postComment);
+        workshopRepository.save(workshop);
+        return "Published";
     }
 }

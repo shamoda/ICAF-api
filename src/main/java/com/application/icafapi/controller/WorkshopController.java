@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -35,7 +36,7 @@ public class WorkshopController {
                                             @RequestParam("description") String description,
                                             @RequestParam("file") MultipartFile proposal
     ) {
-        Workshop workshop = new Workshop(ID, title, subject, conductor, description, FILE_NAME, IMAGE_NAME, VENUE, DATE, TIME, ACCEPT, R_COMMENT, A_COMMENT, CurrentDATETIME,PUBLISH);
+        Workshop workshop = new Workshop(ID, title, subject, conductor, description, FILE_NAME, IMAGE_NAME, VENUE, DATE, TIME, ACCEPT, R_COMMENT, A_COMMENT, CurrentDATETIME,PUBLISH,false,"TEST", LocalDateTime.now());
         return new ResponseEntity<>(workshopService.createWorkshop(workshop, proposal), HttpStatus.CREATED);
     }
 
@@ -51,11 +52,12 @@ public class WorkshopController {
 
     @PostMapping("/reviewProposal")
     public ResponseEntity<?> reviewProposal(@RequestParam("status") String status,
-                                            @RequestParam("rComment") String rComment,
+                                            @RequestParam(value="rComment", required = false) String rComment,
+                                            @RequestParam(value="aComment", required = false) String adminComment,
                                             @RequestParam("conductor") String conductor,
                                             @RequestParam("id") String workshopId
     ) {
-        return new ResponseEntity<>(workshopService.reviewProposal(workshopId, status, rComment, conductor), HttpStatus.CREATED);
+        return new ResponseEntity<>(workshopService.reviewProposal(workshopId, status, rComment, conductor,adminComment), HttpStatus.CREATED);
     }
 
     @GetMapping("/getWorkshopsByConductor/{conductor}")
@@ -96,4 +98,12 @@ public class WorkshopController {
         return new ResponseEntity<>(workshopService.getImageUrl(filename), HttpStatus.OK);
     }
 
+    @PostMapping("/publishPost/{id}")
+    public ResponseEntity<?> editProposal(@PathVariable String id,
+                                          @RequestParam("status") String status,
+                                          @RequestParam("postComment") String post
+    )
+    {
+        return new ResponseEntity<>(workshopService.publishPost(id,status,post), HttpStatus.OK);
+    }
 }
