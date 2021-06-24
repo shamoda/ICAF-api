@@ -49,7 +49,7 @@ public class WorkshopService {
     }
    
     //create a workshop conductor
-    public Workshop createWorkshop(Workshop workshop,MultipartFile proposal){
+    public String createWorkshop(Workshop workshop,MultipartFile proposal){
         //unique id generating by counting no of documents
         Query query = new Query();
         query.addCriteria(Criteria.where(""));
@@ -68,7 +68,7 @@ public class WorkshopService {
         //generating email
         //emailUtil.sendEmail(workshop.getConductor(), WORKSHOP_REGISTRATION_BODY, WORKSHOP_REGISTRATION_BODY);
         workshopRepository.save(workshop);
-        return workshop;
+        return "created";
     }
 
     public List<Workshop> getAllWorkshops(){
@@ -85,7 +85,6 @@ public class WorkshopService {
         return  workshopRepository.findAll(example);
     }
 
-
     //review workshop
     public String reviewProposal(String workshopId, String status, String rComment,String conductorEmail) {
         if(status.equals("approved")) {
@@ -100,8 +99,8 @@ public class WorkshopService {
         mongoTemplate.save(workshop);
         return "reviewed";
     }
-    //returns a list of workshops for each conductor
-    public List<Workshop> getWorkshopsByConductor(String conductorEmail){
+    //returns a workshop for each conductor
+    public Workshop getWorkshopsByConductor(String conductorEmail){
        return workshopRepository.findByConductor(conductorEmail);
     }
     //returns a workshop by Id
@@ -110,7 +109,6 @@ public class WorkshopService {
     }
 
     public String getImageUrl(String imageName){
-
         S3Client s3client = S3Client.create();
         S3Utilities utilities = s3client.utilities();
         GetUrlRequest request = GetUrlRequest.builder().bucket(PROPOSAL_BUCKET).key(imageName).build();
@@ -131,13 +129,18 @@ public class WorkshopService {
         return "Workshop deleted";
 
     }
-
-    public String editWorkshop(String workshopId, String date, String time, MultipartFile image,String venue) {
+    public String editWorkshop(String workshopId, String date, String time, MultipartFile image, String venue, String title, String subject, String conductor, String description, String publish, String aComment) {
         //querying and finding the object matching with workshopId
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
         workshop.setDate(date);
         workshop.setTime(time);
         workshop.setVenue(venue);
+        workshop.setTitle(title);
+        workshop.setSubject(subject);
+        workshop.setConductor(conductor);
+        workshop.setDescription(description);
+        workshop.setPublish(publish);
+        workshop.setAComment(aComment);
         //Generate image name and setting
         String ext = FilenameUtils.getExtension(image.getOriginalFilename());
         IMAGE_NAME = workshop.getWorkshopId() +"."+ext;

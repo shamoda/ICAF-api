@@ -44,4 +44,10 @@ public class ConductorController {
         User user = new User(email,name,phone,ROLE, password);
         return new ResponseEntity<>(conductorService.createWorkshopConductor(workshopConductor,user), HttpStatus.CREATED);
     }
+
+    @GetMapping("/getConductor/{conductor}")
+    public ResponseEntity<?> getWorkshopsForConductor(@PathVariable String conductor) {
+        return new ResponseEntity<>(conductorService.getConductor(conductor), HttpStatus.ACCEPTED);
+    }
+
 }

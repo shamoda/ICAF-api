@@ -33,4 +33,5 @@ public class Workshop {
     private String rComment;
     private String aComment;
     private LocalDateTime current;
+    private String publish;
 }
