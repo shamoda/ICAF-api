@@ -28,4 +28,5 @@ public class WorkshopConductor {
     private String eduQualification2;
     private String organization;
     private String post;
+
 }
