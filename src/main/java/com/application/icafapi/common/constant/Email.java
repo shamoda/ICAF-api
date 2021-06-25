@@ -39,6 +39,13 @@ public class Email {
     public static final String SUBMISSION_APPROVED_BODY = "Congratulations!" + newLine  + newLine +
             "We are excited to inform you that your submission was Approved." + newLine + "Please login to your account to complete the registration and  stay up to date." + newLine;
 
+    public static final String POST_STATUS_SUBJECT = "About Your Workshop Post Status";
+
+    public static final String POST_APPROVED_BODY = "Congratulations!" + newLine  + newLine +
+            "We are excited to inform you that your workshop was published in our workshop programs section." + newLine + "Please login to your account to read your post." + newLine;
+    public static final String POST_REJECTED_BODY = "Hello," + newLine  + newLine +
+            "We are really sorry to inform you that your workshop post was unpublished." + newLine + "Please contact the authorized personnel mentioned in the website." + newLine;
+
     public static final String SUBMISSION_REJECTED_BODY = "Hello," + newLine  + newLine +
             "We are really sorry to inform you that your submission was Rejected." + newLine + "Please login to your account to know more about this decision." + newLine;
 
