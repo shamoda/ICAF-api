@@ -1,14 +1,20 @@
 package com.application.icafapi.service;
 
 import com.application.icafapi.common.util.EmailUtil;
+import com.application.icafapi.model.CustomUserDetails;
 import com.application.icafapi.model.User;
 import com.application.icafapi.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,21 +22,32 @@ import java.util.List;
 import static com.application.icafapi.common.constant.Email.*;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final MongoTemplate mongoTemplate;
     private final EmailUtil emailUtil;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository repository, MongoTemplate mongoTemplate, EmailUtil emailUtil) {
+    public UserService(UserRepository repository, MongoTemplate mongoTemplate, EmailUtil emailUtil, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.repository = repository;
         this.mongoTemplate = mongoTemplate;
         this.emailUtil = emailUtil;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User insertUser(User user) {
-        return repository.save(user);
+    public String insertUser(User user) {
+        User user1 = repository.findByEmail(user.getEmail());
+        //checking whether user is preregistered
+        if(user1 == null){
+            return null; //could throw an exception also
+        }
+        //encoding password and setting
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        repository.save(user);
+        return "Registration of user is successful!!";
     }
 
     public List<User> retrieveAllUsers() {
@@ -52,7 +69,7 @@ public class UserService {
         else
             return user;
     }
-     //test
+    //test
     public void deleteUser(User user){
         repository.delete(user);
     }
@@ -74,5 +91,14 @@ public class UserService {
         user.setPassword(password);
         mongoTemplate.save(user);
         return "Password Changed";
+    }
+
+    @Override //overriding loadUserByName method
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.findByEmail(email);
+        if(user==null){
+            throw  new UsernameNotFoundException("User Not Found");
+        }
+        return new CustomUserDetails(user);
     }
 }
