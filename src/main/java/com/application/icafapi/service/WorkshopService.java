@@ -159,10 +159,11 @@ public class WorkshopService {
     public String publishPost(String workshopId,String status,String postComment){
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
         log.info(workshop.getWorkshopId());
+        //send emails to conductors for published and unpublished posts
         if(status.equals("published")) {
-            emailUtil.sendEmail(workshop.getConductor(), SUBMISSION_STATUS_SUBJECT, SUBMISSION_APPROVED_BODY+COMMITTEE_REGISTRATION_END);
+            emailUtil.sendEmail(workshop.getConductor(), POST_STATUS_SUBJECT, POST_APPROVED_BODY+COMMITTEE_REGISTRATION_END);
         } else if (status.equals("unpublished")) {
-            emailUtil.sendEmail(workshop.getConductor(), SUBMISSION_STATUS_SUBJECT, SUBMISSION_REJECTED_BODY+COMMITTEE_REGISTRATION_END);
+            emailUtil.sendEmail(workshop.getConductor(), POST_STATUS_SUBJECT, POST_REJECTED_BODY+COMMITTEE_REGISTRATION_END);
         }
         workshop.setPublish(status);
         workshop.setPostComment(postComment);
