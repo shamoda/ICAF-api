@@ -4,6 +4,7 @@ import com.application.icafapi.model.User;
 import com.application.icafapi.model.Workshop;
 import com.application.icafapi.model.WorkshopConductor;
 import com.application.icafapi.service.WorkshopService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import static com.application.icafapi.common.constant.workshopConstant.*;
 @RestController
 @RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class WorkshopController {
 
     private final WorkshopService workshopService;

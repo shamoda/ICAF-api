@@ -96,14 +96,11 @@ public class WorkshopService {
         //querying and finding the object matching with workshopId
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
         workshop.setStatus(status);
+        log.info(workshop.getStatus());
         //check reviewer comment null
-        if(!rComment.equals(null)){
-            workshop.setRComment(rComment);
-        }
-        //check admin comment null
-        if(!adminComment.equals(null)){
-            workshop.setAComment(adminComment);
-        }
+        workshop.setRComment(rComment);
+        workshop.setAComment(adminComment);
+
         mongoTemplate.save(workshop);
         return "reviewed";
     }
