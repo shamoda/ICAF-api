@@ -33,11 +33,10 @@ public class UserController {
         return new ResponseEntity<>(service.retrieveByExample(user), HttpStatus.OK);
     }
 
-    @PostMapping("/user/login")
-    public ResponseEntity<?> tmpLogin( @RequestParam("email") String email,
-                                       @RequestParam("password") String password )
+    @GetMapping("/user/login/{email}")
+    public ResponseEntity<?> login( @PathVariable String email )
     {
-        return new ResponseEntity<>(service.login(email, password), HttpStatus.OK);
+        return new ResponseEntity<>(service.login(email), HttpStatus.OK);
     }
 
     @PostMapping("/user/changepassword")

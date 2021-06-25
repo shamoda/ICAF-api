@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
     public String insertUser(User user) {
         User user1 = repository.findByEmail(user.getEmail());
         //checking whether user is preregistered
-        if(user1 == null){
+        if(user1 != null){
             return null; //could throw an exception also
         }
         //encoding password and setting
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
         return repository.findAll(example);
     }
 
-    public User login(String email, String password) {
+    public User login(String email) {
         User user = repository.findByEmail(email);
         if(user == null) {
             return null;
@@ -85,7 +85,7 @@ public class UserService implements UserDetailsService {
 
     public String changePassword(String email, String password) {
         User user = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(email)), User.class);
-        user.setPassword(password);
+        user.setPassword(bCryptPasswordEncoder.encode(password));
         mongoTemplate.save(user);
         return "Password Changed";
     }

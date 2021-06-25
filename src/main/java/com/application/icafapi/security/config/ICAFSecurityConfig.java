@@ -28,11 +28,23 @@ public class ICAFSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    protected void configure(HttpSecurity httpSecurity, WebSecurity web)throws Exception{
-        httpSecurity
+    protected void configure(HttpSecurity http)throws Exception{
+        http
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/attendee")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/download/{type}/{fileName}")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/getWorkshops/search")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/researcher/filter")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/registerConductor")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/registerWorkshop")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
