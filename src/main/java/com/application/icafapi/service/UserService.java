@@ -63,10 +63,7 @@ public class UserService implements UserDetailsService {
         User user = repository.findByEmail(email);
         if(user == null) {
             return null;
-        } else if (!user.getPassword().equals(password)) {
-            return null;
-        }
-        else
+        } else
             return user;
     }
     //test
