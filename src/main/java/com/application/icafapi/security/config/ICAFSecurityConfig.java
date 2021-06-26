@@ -46,10 +46,11 @@ public class ICAFSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/registerWorkshop")
                 .permitAll()
+                .antMatchers("/api/v1/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic();
-        //ant matching to be done
     }
 }
