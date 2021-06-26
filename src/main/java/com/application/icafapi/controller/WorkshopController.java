@@ -38,7 +38,7 @@ public class WorkshopController {
                                             @RequestParam("description") String description,
                                             @RequestParam("file") MultipartFile proposal
     ) {
-        Workshop workshop = new Workshop(ID, title, subject, conductor, description, FILE_NAME, IMAGE_NAME, VENUE, DATE, TIME, ACCEPT, R_COMMENT, A_COMMENT, CurrentDATETIME,PUBLISH,false,"TEST", LocalDateTime.now());
+        Workshop workshop = new Workshop(ID, title, subject, conductor, description, FILE_NAME, IMAGE_NAME, VENUE, DATE, TIME, ACCEPT,R_COMMENT,A_COMMENT, CurrentDATETIME,PUBLISH,false,"TEST", LocalDateTime.now());
         return new ResponseEntity<>(workshopService.createWorkshop(workshop, proposal), HttpStatus.CREATED);
     }
 
@@ -54,8 +54,8 @@ public class WorkshopController {
 
     @PostMapping("/reviewProposal")
     public ResponseEntity<?> reviewProposal(@RequestParam("status") String status,
-                                            @RequestParam(value="rComment", required = false) String rComment,
-                                            @RequestParam(value="aComment", required = false) String adminComment,
+                                            @RequestParam(value="rComment", required = false, defaultValue = "") String rComment,
+                                            @RequestParam(value="aComment", required = false, defaultValue = "") String adminComment,
                                             @RequestParam("conductor") String conductor,
                                             @RequestParam("id") String workshopId
     ) {

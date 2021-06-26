@@ -98,9 +98,12 @@ public class WorkshopService {
         workshop.setStatus(status);
         log.info(workshop.getStatus());
         //check reviewer comment null
-        workshop.setRComment(rComment);
-        workshop.setAComment(adminComment);
-
+        if(!String.valueOf(rComment).equals("")){
+            workshop.setRComment(rComment);
+        }
+        if(!String.valueOf(adminComment).equals("")){
+            workshop.setAComment(adminComment);
+        }
         mongoTemplate.save(workshop);
         return "reviewed";
     }
