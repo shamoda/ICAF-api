@@ -25,7 +25,7 @@ import static com.application.icafapi.common.constant.workshopConstant.*;
 public class WorkshopController {
 
     private final WorkshopService workshopService;
-//
+
     @Autowired //Dependency injection
     public WorkshopController(WorkshopService workshopService) {
         this.workshopService = workshopService;
