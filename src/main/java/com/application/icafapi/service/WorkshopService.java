@@ -75,13 +75,24 @@ public class WorkshopService {
     public List<Workshop> getAllWorkshops(){
         return workshopRepository.findAll();
     }
+    public List<Workshop> getByExample(Workshop workshop){
+        //Search probe,matching the expected inputs
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase().withMatcher("title", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING));
+        Example<Workshop> example = Example.of(workshop,matcher);
+        return  workshopRepository.findAll(example);
+    }
+
+    //search items
     public List<Workshop> getBySearch(Workshop workshop){
         //Search probe,matching the expected inputs
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase().withMatcher("title", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
                 .withIgnoreCase().withMatcher("subject", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
                 .withIgnoreCase().withMatcher("description", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
-                .withIgnoreCase().withMatcher("conductor", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING));
+                .withIgnoreCase().withMatcher("conductor", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
+                .withIgnoreCase().withMatcher("status", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
+                .withIgnoreCase().withMatcher("edit", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING));
         Example<Workshop> example = Example.of(workshop,matcher);
         return  workshopRepository.findAll(example);
     }
@@ -95,7 +106,9 @@ public class WorkshopService {
         }
         //querying and finding the object matching with workshopId
         Workshop workshop = mongoTemplate.findOne(Query.query(Criteria.where("_id").is(workshopId)), Workshop.class);
-        workshop.setStatus(status);
+        if(!status.equals("")){
+            workshop.setStatus(status);
+        }
         log.info(workshop.getStatus());
         //check reviewer comment null
         if(!String.valueOf(rComment).equals("")){
@@ -125,7 +138,7 @@ public class WorkshopService {
 }
     public String deleteWorkshop(String email) {
         //find the workshop of the Id ,delete workshop
-        Workshop workshop = workshopRepository.findById(email).get();
+        Workshop workshop = workshopRepository.findByConductor(email);
         String workshopId = workshop.getWorkshopId();
         workshopRepository.deleteById(workshopId);
         //delete workshop conductor
