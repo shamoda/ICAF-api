@@ -2,7 +2,6 @@ package com.application.icafapi.service;
 
 import com.application.icafapi.model.Analytics;
 import com.application.icafapi.model.Researcher;
-import com.application.icafapi.model.Workshop;
 import com.application.icafapi.repository.AttendeeRepository;
 import com.application.icafapi.repository.ResearcherRepository;
 import com.application.icafapi.repository.UserRepository;
@@ -36,17 +35,14 @@ public class AnalyticsService {
         Researcher researcher = new Researcher();
         researcher.setPaid("true");
         researcher.setStatus("approved");
-        Example<Researcher> exampleResearch = Example.of(researcher);
-
-        Workshop workshop = new Workshop();
-        workshop.setPublish("published");
-        Example<Workshop> exampleWorkshop = Example.of(workshop);
+        Example<Researcher> example = Example.of(researcher);
 
         analytics.setAttendees(attendeeRepository.count());
         analytics.setAllResearchers(researcherRepository.count());
         analytics.setAllWorkshops(workshopRepository.count());
-        analytics.setPublishedPapers(researcherRepository.count(exampleResearch));
-        analytics.setPublishedWorkshops(workshopRepository.count(exampleWorkshop));
+        analytics.setPublishedPapers(researcherRepository.count(example));
+        analytics.setPublishedWorkshops(23l);  // implement logic to retrieve the approved editors posts count
+
         return analytics;
     }
 

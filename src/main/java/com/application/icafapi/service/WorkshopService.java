@@ -20,6 +20,7 @@ import software.amazon.awssdk.services.s3.S3Utilities;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -163,6 +164,8 @@ public class WorkshopService {
         workshop.setPublish(publish);
         workshop.setAComment(aComment);
         workshop.setEdit(true);
+        //setting modified datetime
+        workshop.setEditDate(LocalDateTime.now());
         //Generate image name and setting
         String ext = FilenameUtils.getExtension(image.getOriginalFilename());
         IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
