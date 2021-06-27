@@ -32,7 +32,7 @@ public class ICAFSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .antMatchers( "/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/api/v1/attendee")
                 .permitAll()
