@@ -167,11 +167,14 @@ public class WorkshopService {
         //setting modified datetime
         workshop.setEditDate(LocalDateTime.now());
         //Generate image name and setting
-        String ext = FilenameUtils.getExtension(image.getOriginalFilename());
-        IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
-        workshop.setImageName(IMAGE_NAME);
-        //upload file
-        fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
+        if(image != null){
+            String ext = FilenameUtils.getExtension(image.getOriginalFilename());
+            IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
+            workshop.setImageName(IMAGE_NAME);
+            //upload file
+            fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
+        }
+
         mongoTemplate.save(workshop);
         return "edited";
     }
