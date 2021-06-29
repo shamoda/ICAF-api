@@ -23,6 +23,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.application.icafapi.common.constant.Email.*;
 import static com.application.icafapi.common.constant.Email.COMMITTEE_REGISTRATION_END;
@@ -166,12 +167,11 @@ public class WorkshopService {
         //Generate image name and setting
         if(image != null){
             String ext = FilenameUtils.getExtension(image.getOriginalFilename());
-            IMAGE_NAME = workshop.getWorkshopId() +"."+ext;
+            IMAGE_NAME = UUID.randomUUID().toString() + "."+ext;
             workshop.setImageName(IMAGE_NAME);
             //upload file
             fileService.uploadFile(image,IMAGE_NAME, PROPOSAL);
         }
-
         mongoTemplate.save(workshop);
         return "edited";
     }

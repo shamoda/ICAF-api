@@ -28,7 +28,7 @@ public class AnalyticsService {
         this.workshopRepository = workshopRepository;
     }
 
-    @Cacheable(cacheNames = {"analytics"})
+//    @Cacheable(cacheNames = {"analytics"})
     public Analytics getAnalytics() {
         System.out.println("Method executed");
         Analytics analytics = new Analytics();

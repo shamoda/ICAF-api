@@ -15,7 +15,7 @@ import java.util.Date;
 @Log4j2
 public class CacheConfig {
     @CacheEvict(allEntries = true, cacheNames = {"analytics"})
-    @Scheduled(fixedDelay = 20 * 60 * 1000, initialDelay = 500)
+//    @Scheduled(fixedDelay = 20 * 60 * 1000, initialDelay = 500)
     public void reportCacheEvict() {
         log.info("Analytics cache flushed: " + new Date());
     }
