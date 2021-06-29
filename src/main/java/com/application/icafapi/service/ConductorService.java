@@ -1,6 +1,7 @@
 package com.application.icafapi.service;
 
 import com.application.icafapi.common.util.EmailUtil;
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.User;
 import com.application.icafapi.model.WorkshopConductor;
 import com.application.icafapi.repository.ConductorRepository;
@@ -27,7 +28,7 @@ public class ConductorService {
     }
 
     //create a workshop conductor
-    public WorkshopConductor createWorkshopConductor(WorkshopConductor workshopConductor, User user){
+    public WorkshopConductor createWorkshopConductor(WorkshopConductor workshopConductor, User user) throws ICAFException {
         //Saving as user
         userService.insertUser(user);
         emailUtil.sendQR(user.getName(), user.getEmail(), QR_SUBJECT, QR_BODY+COMMITTEE_REGISTRATION_END, user.getRole());

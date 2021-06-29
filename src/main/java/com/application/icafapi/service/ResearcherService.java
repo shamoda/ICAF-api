@@ -1,6 +1,7 @@
 package com.application.icafapi.service;
 
 import com.application.icafapi.common.util.EmailUtil;
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.Researcher;
 import com.application.icafapi.model.User;
 import com.application.icafapi.repository.ResearcherRepository;
@@ -35,9 +36,9 @@ public class ResearcherService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public Researcher insertResearcher(Researcher researcher, User user, MultipartFile mFile) {
-        fileService.uploadFile(mFile, researcher.getFileName(), "paper");
+    public Researcher insertResearcher(Researcher researcher, User user, MultipartFile mFile) throws ICAFException {
         userService.insertUser(user);
+        fileService.uploadFile(mFile, researcher.getFileName(), "paper");
         emailUtil.sendEmail(user.getEmail(), USER_REGISTRATION_SUBJECT, RESEARCHER_REGISTRATION_BODY);
         return repository.save(researcher);
     }

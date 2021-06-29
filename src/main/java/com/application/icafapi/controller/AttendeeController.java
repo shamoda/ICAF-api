@@ -1,5 +1,6 @@
 package com.application.icafapi.controller;
 
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.Attendee;
 import com.application.icafapi.model.User;
 import com.application.icafapi.service.AttendeeService;
@@ -32,7 +33,11 @@ public class AttendeeController {
         Attendee attendee = new Attendee(email, name, contact, organization, address);
         User user = new User(email, name, contact, "attendee", password);
 
-        return new ResponseEntity<>(service.insertAttendee(attendee, user), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(service.insertAttendee(attendee, user), HttpStatus.CREATED);
+        } catch (ICAFException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/attendee")

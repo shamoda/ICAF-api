@@ -1,6 +1,7 @@
 package com.application.icafapi.service;
 
 import com.application.icafapi.common.util.EmailUtil;
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.Attendee;
 import com.application.icafapi.model.User;
 import com.application.icafapi.repository.AttendeeRepository;
@@ -26,7 +27,7 @@ public class AttendeeService {
         this.emailUtil = emailUtil;
     }
 
-    public Attendee insertAttendee(Attendee attendee, User user) {
+    public Attendee insertAttendee(Attendee attendee, User user) throws ICAFException {
         userService.insertUser(user);
         emailUtil.sendEmail(user.getEmail(), USER_REGISTRATION_SUBJECT, ATTENDEE_REGISTRATION_BODY);
         emailUtil.sendQR(user.getName(), user.getEmail(), QR_SUBJECT, QR_BODY+COMMITTEE_REGISTRATION_END, user.getRole());

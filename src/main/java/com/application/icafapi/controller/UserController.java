@@ -1,5 +1,6 @@
 package com.application.icafapi.controller;
 
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.User;
 import com.application.icafapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,11 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        return new ResponseEntity<>(service.insertUser(user), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(service.insertUser(user), HttpStatus.CREATED);
+        } catch (ICAFException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/user")

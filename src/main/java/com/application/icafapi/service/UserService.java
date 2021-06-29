@@ -1,6 +1,7 @@
 package com.application.icafapi.service;
 
 import com.application.icafapi.common.util.EmailUtil;
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.CustomUserDetails;
 import com.application.icafapi.model.User;
 import com.application.icafapi.repository.UserRepository;
@@ -37,11 +38,11 @@ public class UserService implements UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public String insertUser(User user) {
+    public String insertUser(User user) throws ICAFException {
         User user1 = repository.findByEmail(user.getEmail());
         //checking whether user is preregistered
         if(user1 != null){
-            return null; //could throw an exception also
+            throw new ICAFException("email address already exists"); //could throw an exception also
         }
         //encoding password and setting
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());

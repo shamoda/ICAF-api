@@ -1,5 +1,6 @@
 package com.application.icafapi.controller;
 
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.User;
 import com.application.icafapi.model.WorkshopConductor;
 import com.application.icafapi.service.ConductorService;
@@ -42,7 +43,11 @@ public class ConductorController {
         //appending name
         String name = fName + " "+lName;
         User user = new User(email,name,phone,ROLE, password);
-        return new ResponseEntity<>(conductorService.createWorkshopConductor(workshopConductor,user), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(conductorService.createWorkshopConductor(workshopConductor,user), HttpStatus.CREATED);
+        } catch (ICAFException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/getConductor/{conductor}")

@@ -1,5 +1,6 @@
 package com.application.icafapi.controller;
 
+import com.application.icafapi.exception.ICAFException;
 import com.application.icafapi.model.Researcher;
 import com.application.icafapi.model.User;
 import com.application.icafapi.service.ResearcherService;
@@ -37,7 +38,11 @@ public class ResearcherController {
         Researcher researcher = new Researcher(email, name, contact, title, author, paperAbstract, fileName, "pending", "false", "");
         User user = new User(email, name, contact, "researcher", password);
 
-        return new ResponseEntity<>(service.insertResearcher(researcher,user, paper), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(service.insertResearcher(researcher,user, paper), HttpStatus.CREATED);
+        } catch (ICAFException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/researcher")

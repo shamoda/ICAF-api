@@ -30,7 +30,6 @@ public class AnalyticsService {
 
 //    @Cacheable(cacheNames = {"analytics"})
     public Analytics getAnalytics() {
-        System.out.println("Method executed");
         Analytics analytics = new Analytics();
 
         Researcher researcher = new Researcher();
