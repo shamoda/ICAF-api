@@ -34,8 +34,6 @@ public class CommitteeService {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         emailUtil.sendQR(user.getName(), user.getEmail(), QR_SUBJECT, QR_BODY+COMMITTEE_REGISTRATION_END, user.getRole());
-        String tempPWD = bCryptPasswordEncoder.encode(user.getPassword());
-        user.setPassword(tempPWD);
         return repository.save(user);
     }
 

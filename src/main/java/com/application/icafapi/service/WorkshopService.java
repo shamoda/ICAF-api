@@ -77,10 +77,7 @@ public class WorkshopService {
         return workshopRepository.findAll();
     }
     public List<Workshop> getByExample(Workshop workshop){
-        //Search probe,matching the expected inputs
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnoreCase().withMatcher("title", ExampleMatcher.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING));
-        Example<Workshop> example = Example.of(workshop,matcher);
+        Example<Workshop> example = Example.of(workshop);
         return  workshopRepository.findAll(example);
     }
 

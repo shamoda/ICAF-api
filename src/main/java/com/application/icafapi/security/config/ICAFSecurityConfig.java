@@ -34,6 +34,10 @@ public class ICAFSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/**")
                 .permitAll()
+//               ============= TO BE COMMENTED ============
+                .antMatchers("/api/v1/**")
+                .permitAll()
+//               ==========================================
                 .antMatchers(HttpMethod.POST,"/api/v1/attendee")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/download/{type}/{fileName}")
