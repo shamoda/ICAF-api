@@ -10,7 +10,7 @@ Node v14.17.0 or above
 Docker
 ```
 
-AWS S3 service uses for storage purposes. Therefore, AWS IAM credentials needs to be passed as env variables to the Docker containers.
+AWS S3 service is used for storage purposes. Therefore, AWS IAM credentials needs to be passed as env variables to the Docker containers.
 
 To deploy on Ubuntu server
 
