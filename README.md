@@ -18,7 +18,7 @@ To deploy on Ubuntu server
 # git clone https://github.com/shamoda/ICAF-api
 # cd ICAF-api
 # mvn clean install
-# docker build -t icaf-api:latest
+# docker build -t icaf-api:latest .
 # docker run --name instance-01 -d -p 8081:8080 -e AWS_ACCESS_KEY_ID=<access-key> -e AWS_SECRET_ACCESS_KEY=<secret-key> icaf-api:latest
 ```
 
